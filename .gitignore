@@ -1,0 +1,12 @@
+*.code-workspace
+banned_words.txt
+*.sha256
+*.crt
+*.csr
+*.pem
+*.asc
+history-*.log
+*SENSITIVE*
+*research*.txt
+.DS_Store
+*.csv
