@@ -1,6 +1,9 @@
 #!/bin/bash
 # Tim H 2021
-# Installs and sets up tools for archiving Reddit
+# Installs and sets up for reddit-html-archiver archiving Reddit
+# This tool can only download whole subreddits between given dates
+# This tool cannot download by user
+#
 # Designed for OS X
 #
 #   Notes:
@@ -12,24 +15,30 @@
 #       * https://github.com/libertysoft3/reddit-html-archiver
 #
 
-#  !NON-EXECUTABLE!
-echo "this script should not be run directly. It is either notes or in progress. Exiting"
-exit 1
-
 ################################################################################
 #		MAIN PROGRAM
 ################################################################################
+
+# bomb out in case of errors
+set -e
+
+# install the Python module for interacting with the Reddit API
 pip install psaw -U
 
-cd "/Volumes/GoogleDrive/My Drive/source_code" || exit 2
+# change directory into place where new tool will be downloaded
+cd "$HOME/g_drive/bin/" || exit 2
 
+# download and install a dependency
+# snudown is just a library, cannot be run directly
 git clone https://github.com/chid/snudown
 cd snudown || exit 2
-sudo python3 setup.py install
+python3 setup.py install
+
+# download the real tool, reddit-html-archiver
 cd .. || exit 3
 git clone https://github.com/libertysoft3/reddit-html-archiver
 cd reddit-html-archiver || exit 4
 chmod u+x ./*.py
 
-# Test
+# Test to make sure it can run, just dump the help command
 python3 ./fetch_links.py -h
