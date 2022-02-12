@@ -1,17 +1,22 @@
 #!/bin/bash
 # Tim H 2021
 # Installs and sets up a tool on the local system for archiving Reddit
+# RedditDownloader hosts a local web application that really only downloads
+# images and videos posted by someone.
+# This tool doesn't download any text only posts nor comments on posts by
+# Others
+#
 # Designed for OS X & Linux
 #
-#   Notes:
-#       On OS X: python --version is Python 2.7.17
-#                   python3 --version is Python 3.8.8
-#                   pip --version   (python 3.9
-#                   pip3 --version  python 3.8
+#   Notes about my test env
+#       On OS X: python  --version is Python 2.7.17
+#                python3 --version is Python 3.8.8
+#                pip     --version is Python 3.9
+#                pip3    --version is Python 3.8
 #   References
 #       * https://shadowmoose.github.io/RedditDownloader/Getting_Started/Sources/
 #       * https://github.com/shadowmoose/RedditDownloader
-#       * List of friends on Reddit: https://ssl.reddit.com/prefs/friends
+#       * List of your friends on Reddit: https://ssl.reddit.com/prefs/friends
 
 ################################################################################
 #		MAIN PROGRAM
@@ -24,7 +29,7 @@ set -e
 cd "$HOME/g_drive/bin/" || exit 2
 
 # Download it, name it something version agnostic to make it more future proof
-# You should visit https://github.com/shadowmoose/RedditDownloader and verify you've got the latest version
+# You should visit https://github.com/shadowmoose/RedditDownloader/releases and verify you've got the latest version
 wget -O RedditDownloader.tar.gz -q "https://github.com/shadowmoose/RedditDownloader/archive/3.1.5.tar.gz"
 
 # extract it
