@@ -18,7 +18,7 @@ pip3 install warcprox
 #   and can be easily accessed for your laptop:
 # mount point one time setup to modify the /etc/fstab file. You'll still have to manually mount that point
 # make sure the /opt/warcproxy/warcs directory is EMPTY when you do this:
-# echo "10.0.1.35:/volume1/nfs_warc_file_mount_point /opt/warcproxy/warcs      nfs auto,nofail,noexec,noatime,nolock,intr,tcp,actimeo=1800 0 0" >> /etc/fstab
+# echo "10.0.1.35:/volume1/nfs_archive_mirror_downloads/web_archiving/websites_via_wayback_warc /opt/warcproxy/warcs      nfs auto,nofail,noexec,noatime,nolock,intr,tcp,actimeo=1800 0 0" >> /etc/fstab
 # mount it manually the first time. It should mount successfully on reboots.
 # mount /opt/warcproxy/warcs
 
