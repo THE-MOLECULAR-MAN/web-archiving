@@ -47,12 +47,13 @@ log "========= What invoked this script: ============="
 ps -o args="$PPID"
 
 # get the screen session ID
-SCREEN_SESSION_ID=$(screen -ls | grep warc | cut -d "." -f1 | xargs)
+#SCREEN_SESSION_ID=$(screen -ls | grep warc | cut -d "." -f1 | xargs)
 
 # stop the screen session and thus kill the warc proxy
 #log "====== not going to try to kill the service ========"
 #screen -ls
 
-screen -X -S "$SCREEN_SESSION_ID" quit
+#screen -X -S "$SCREEN_SESSION_ID" quit
+pkill -f warcprox
 
 log "====== FINISHED WARC-PROXY-STOP SUCCESSFULLY ========"
