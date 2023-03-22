@@ -5,6 +5,7 @@
 # ./dump-single-tiktok-user.sh therock
 #
 # TODO:
+#   * add support for maxtime or max number of videos/posts to download
 #   * create a new jSON file every time, include timestamp in filename
 #   * create a json DIFF, determine if/when any of the following has changed
 #       * a video was taken down
