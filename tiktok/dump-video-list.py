@@ -1,4 +1,5 @@
-#!/opt/homebrew/bin/python3.10
+#!/usr/bin/python3
+###!/opt/homebrew/bin/python3.10
 # Tim H 2023
 #
 # Takes a TikTok profile URL and downloads the full HTML of the page, including

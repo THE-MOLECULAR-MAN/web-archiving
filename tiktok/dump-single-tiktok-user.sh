@@ -47,7 +47,7 @@ create_list_of_user_video_URLs () {
     # output the full HTML to a local text file.
     # https://stackoverflow.com/questions/22739514/how-to-get-html-with-javascript-rendered-sourcecode-by-using-selenium
     echo "Extracting HTML file for user page using Selenium..."
-     ./dump-video-list.py --url="$DUMP_PROFILE_URL" > "$TMP_HTML_DUMP_FILENAME"
+    python3 ./dump-video-list.py --url="$DUMP_PROFILE_URL" > "$TMP_HTML_DUMP_FILENAME"
     echo "Extracting video URLs from HTML file..."
     # parse the local HTML file (rendered by Selenium) with Lynx to extract
     # all of the URLs to each video post by a user

@@ -18,7 +18,7 @@ TIKTOK_USERNAMES_LIST_FILE="tiktok_username_list.txt"
 while IFS="" read -r ITER_USERNAME || [ -n "$ITER_USERNAME" ]
 do
     # dump that single user
-    ./dump-single-tiktok-user.sh "$ITER_USERNAME"
+    /bin/bash ./dump-single-tiktok-user.sh "$ITER_USERNAME"
 done < "$TIKTOK_USERNAMES_LIST_FILE"
 
 echo "finished dump-multiple-tiktok-users.sh successfully"
