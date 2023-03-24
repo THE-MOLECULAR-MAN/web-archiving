@@ -63,6 +63,7 @@ dump_tiktok_user () {
     # same directory and load configuration from it.
     # any additional configuration here (flags passed here) overwrites the
     # config file.
+    echo "Batch downloading all posts by user $DUMP_USERNAME..."
     yt-dlp --batch-file "$TMP_URL_LIST_FILENAME" \
         -o "$DESTINATION_DOWNLOAD_PATH_USER/TikTok_%(creator)s_%(upload_date)s_%(id)s.%(ext)s"
 }
