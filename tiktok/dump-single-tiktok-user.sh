@@ -39,10 +39,9 @@ DUMP_PROFILE_URL="https://www.tiktok.com/@$DUMP_USERNAME"
 DESTINATION_DOWNLOAD_PATH_USER="$DESTINATION_DOWNLOAD_PATH_BASE/$DUMP_USERNAME"
 
 # temporary files
-TMP_URL_LIST_FILENAME="$DESTINATION_DOWNLOAD_PATH_USER/TMP-TikTok-urls_to_download-$DUMP_USERNAME.txt"
-TMP_HTML_DUMP_FILENAME="$DESTINATION_DOWNLOAD_PATH_USER/TMP-TikTok-profile_page-$DUMP_USERNAME.html"
-TMP_SCREENSHOT_FILENAME="$DESTINATION_DOWNLOAD_PATH_USER/TMP-TikTok-profile_page-$DUMP_USERNAME.png"
-
+TMP_URL_LIST_FILENAME="$DESTINATION_DOWNLOAD_PATH_USER/TikTok-urls_to_download-$DUMP_USERNAME.txt"
+TMP_HTML_DUMP_FILENAME="$DESTINATION_DOWNLOAD_PATH_USER/TikTok-profile_page-$DUMP_USERNAME.html"
+TMP_SCREENSHOT_FILENAME="$DESTINATION_DOWNLOAD_PATH_USER/TikTok-profile_page-$DUMP_USERNAME.png"
 
 create_list_of_user_video_URLs () {
     # visit the page using Selenium (so that JavaScript is rendered), and
@@ -50,15 +49,16 @@ create_list_of_user_video_URLs () {
     # https://stackoverflow.com/questions/22739514/how-to-get-html-with-javascript-rendered-sourcecode-by-using-selenium
     echo "Extracting HTML file via Selenium's Google Chrome for user $DUMP_USERNAME..."
     # python3 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" > "$TMP_HTML_DUMP_FILENAME"
+    python3    ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" --html="$TMP_HTML_DUMP_FILENAME" --screenshot="$TMP_SCREENSHOT_FILENAME"
     python3.10 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" --html="$TMP_HTML_DUMP_FILENAME" --screenshot="$TMP_SCREENSHOT_FILENAME"
-    echo "Extracting video URLs from HTML file..."
+    echo "Extracting video URLs from HTML file for user $DUMP_USERNAME..."
     # parse the local HTML file (rendered by Selenium) with Lynx to extract
     # all of the URLs to each video post by a user
     # order by most recent to oldest
     lynx -dump -nonumbers -hiddenlinks=listonly "$TMP_HTML_DUMP_FILENAME" | \
         grep "$DUMP_URL_SUBSTRING" | sort --unique --reverse > "$TMP_URL_LIST_FILENAME"
 
-    # TODO: list the number of video URLs found:
+    echo "Found $(wc -l $TMP_URL_LIST_FILENAME) unique URLs to parse for user $DUMP_USERNAME"
 }
 
 dump_tiktok_user () {
@@ -71,6 +71,7 @@ dump_tiktok_user () {
     echo "Batch downloading all posts by user $DUMP_USERNAME..."
     yt-dlp --batch-file "$TMP_URL_LIST_FILENAME" \
         -o "$DESTINATION_DOWNLOAD_PATH_USER/TikTok_%(creator)s_%(upload_date)s_%(id)s.%(ext)s"
+    echo "Successfully finished batch downloading all posts by user $DUMP_USERNAME..."
 }
 
 update_hashsums() {
@@ -91,6 +92,7 @@ update_hashsums() {
                 sha256sum "$ITER_FILE" >> hashsums.sha256
             fi
     done
+    echo "Successfully finished updating hashsums for user $DUMP_USERNAME"
 }
 
 # create the download path if it does not exist yet
