@@ -27,7 +27,7 @@
 set -e
 
 # where to dump the files. It'll create subdirectories automatically
-DESTINATION_DOWNLOAD_PATH_BASE="$HOME/Downloads/tiktok_downloads"
+DESTINATION_DOWNLOAD_PATH_BASE="$HOME/nfs_archive_mirror_downloads/web_archiving/tiktok/"
 
 # single username passed as the only parameter
 DUMP_USERNAME="$1"
@@ -47,11 +47,11 @@ create_list_of_user_video_URLs () {
     # visit the page using Selenium (so that JavaScript is rendered), and
     # output the full HTML to a local text file.
     # https://stackoverflow.com/questions/22739514/how-to-get-html-with-javascript-rendered-sourcecode-by-using-selenium
-    echo "Extracting HTML file via Selenium's Google Chrome for user $DUMP_USERNAME..."
+    echo "Extracting HTML file via Selenium's Google Chrome for TikTok user $DUMP_USERNAME..."
     # python3 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" > "$TMP_HTML_DUMP_FILENAME"
     python3    ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" --html="$TMP_HTML_DUMP_FILENAME" --screenshot="$TMP_SCREENSHOT_FILENAME"
     python3.10 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" --html="$TMP_HTML_DUMP_FILENAME" --screenshot="$TMP_SCREENSHOT_FILENAME"
-    echo "Extracting video URLs from HTML file for user $DUMP_USERNAME..."
+    echo "Extracting video URLs from HTML file for TikTok user $DUMP_USERNAME..."
     # parse the local HTML file (rendered by Selenium) with Lynx to extract
     # all of the URLs to each video post by a user
     # order by most recent to oldest
