@@ -51,8 +51,9 @@ create_list_of_user_video_URLs () {
     echo "Extracting video URLs from HTML file..."
     # parse the local HTML file (rendered by Selenium) with Lynx to extract
     # all of the URLs to each video post by a user
+    # order by most recent to oldest
     lynx -dump -nonumbers -hiddenlinks=listonly "$TMP_HTML_DUMP_FILENAME" | \
-        grep "$DUMP_URL_SUBSTRING" | sort --unique > "$TMP_URL_LIST_FILENAME"
+        grep "$DUMP_URL_SUBSTRING" | sort --unique --reverse > "$TMP_URL_LIST_FILENAME"
 }
 
 dump_tiktok_user () {
