@@ -2,7 +2,7 @@
 # Tim H 2023
 # dumps a single TikTok user's videos into local path
 # Example usage:
-# ./dump-single-tiktok-user.sh therock
+# ./dump-single-tiktok-user.sh therock /opt/backup/tiktok/
 #
 # TODO:
 #   * add support for maxtime or max number of videos/posts to download
@@ -15,7 +15,6 @@
 #   * add support for digitally signing the hashsum files for authenticity
 #   * potentially add support for scrolling all the way down on profile pages
 #       to make sure it's downloading ALL the old videos
-#   * change the output destination to be a parameter for this script: $2
 #
 # Known issues:
 #   * If a video/comments have been downloaded before, it will overwrite the
@@ -26,11 +25,11 @@
 # quit if any errors are encountered.
 set -e
 
-# where to dump the files. It'll create subdirectories automatically
-DESTINATION_DOWNLOAD_PATH_BASE="$HOME/nfs_archive_mirror_downloads/web_archiving/tiktok"
-
-# single username passed as the only parameter
+# tiktok username
 DUMP_USERNAME="$1"
+
+# where to dump the files. It'll create subdirectories automatically
+DESTINATION_DOWNLOAD_PATH_BASE="$2"
 
 # additional variables, derived from others
 # don't add anything before $DUMP_USERNAME, there may be an @ symbol
@@ -48,14 +47,17 @@ create_list_of_user_video_URLs () {
     # output the full HTML to a local text file.
     # https://stackoverflow.com/questions/22739514/how-to-get-html-with-javascript-rendered-sourcecode-by-using-selenium
     echo "Extracting HTML file via Selenium's Google Chrome for TikTok user $DUMP_USERNAME..."
-    python3 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" --html="$TMP_HTML_DUMP_FILENAME" --screenshot="$TMP_SCREENSHOT_FILENAME"
+    python3 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" \
+        --html="$TMP_HTML_DUMP_FILENAME" \
+        --screenshot="$TMP_SCREENSHOT_FILENAME"
 
     echo "Extracting video URLs from HTML file for TikTok user $DUMP_USERNAME..."
     # parse the local HTML file (rendered by Selenium) with Lynx to extract
     # all of the URLs to each video post by a user
     # order by most recent to oldest
     lynx -dump -nonumbers -hiddenlinks=listonly "$TMP_HTML_DUMP_FILENAME" | \
-        grep "$DUMP_URL_SUBSTRING" | sort --unique --reverse > "$TMP_URL_LIST_FILENAME"
+        grep "$DUMP_URL_SUBSTRING" | sort --unique --reverse \
+        > "$TMP_URL_LIST_FILENAME"
 
     echo "Found $(wc -l "$TMP_URL_LIST_FILENAME") unique URLs to parse for TikTok user $DUMP_USERNAME"
 }
@@ -82,11 +84,11 @@ update_hashsums() {
     touch hashsums.sha256 # create the file in case it doesn't exist
     echo "Updating hashsums for TikTok user $DUMP_USERNAME..."
 
-    find . -type f ! -name '*.sha256' -print0 |
+    # find all the files that aren't json files or hashsum files
+    find . -type f ! -name '*.sha256' ! -name '*.json' -print0 |
         while IFS= read -r -d '' ITER_FILE; do
             # skip calculating the hashsum of this file if it has already been
             #   done. Otherwise calculate it and append it to the file
-            # TODO: find a solution for .json files that change on every run
             if ! grep -q "$ITER_FILE" hashsums.sha256 ; then
                 sha256sum "$ITER_FILE" >> hashsums.sha256
             fi
