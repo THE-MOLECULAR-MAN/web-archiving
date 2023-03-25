@@ -10,9 +10,8 @@
 # try to install for OSX
 # brew install yt-dlp lynx
 
-# need to modify $PATH variable to look in ~/.local/bin/
-# it already is thanks to my Ansible script
-# force it
+# load in case this is a cron, need the $PATH variable to include
+# the $HOME/.local/bin
 # shellcheck disable=1091
 source "$HOME/.bash_profile"
 

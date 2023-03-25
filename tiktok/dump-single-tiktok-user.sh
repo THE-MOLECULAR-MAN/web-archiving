@@ -25,6 +25,11 @@
 # quit if any errors are encountered.
 set -e
 
+# load in case this is a cron, need the $PATH variable to include
+# the $HOME/.local/bin
+# shellcheck disable=1091
+source "$HOME/.bash_profile"
+
 # tiktok username
 DUMP_USERNAME="$1"
 

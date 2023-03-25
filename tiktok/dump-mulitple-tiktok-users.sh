@@ -7,6 +7,11 @@
 #   * doesn't do any sort of validation on the TikTok usernames, doesn't
 #       support commenting out anything yet.
 
+# load in case this is a cron, need the $PATH variable to include
+# the $HOME/.local/bin
+# shellcheck disable=1091
+source "$HOME/.bash_profile"
+
 # define the filename that lists all the usernames, one per line
 # no URL or @ needed
 #TIKTOK_USERNAMES_LIST_FILE="tiktok_username_list.txt"
