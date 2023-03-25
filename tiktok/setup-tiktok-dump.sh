@@ -8,7 +8,7 @@
 #   https://github.com/yt-dlp/yt-dlp
 
 # try to install for OSX, if not, assume Ubuntu/Debian
-# brew install yt-dlp lynx 
+# brew install yt-dlp lynx
 
 # need to modify $PATH variable to look in ~/.local/bin/
 # it already is thanks to my Ansible script
@@ -45,11 +45,7 @@ sudo chown root:root /usr/bin/chromedriver
 sudo chmod +x /usr/bin/chromedriver 
 chromedriver --version
 
-
 # pkg_resources.DistributionNotFound: The 'brotli' distribution was not found and is required by yt-dlp
 
 # install java
 sudo apt install default-jdk 
-
-
-
