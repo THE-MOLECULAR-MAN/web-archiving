@@ -57,7 +57,7 @@ create_list_of_user_video_URLs () {
     lynx -dump -nonumbers -hiddenlinks=listonly "$TMP_HTML_DUMP_FILENAME" | \
         grep "$DUMP_URL_SUBSTRING" | sort --unique --reverse > "$TMP_URL_LIST_FILENAME"
 
-    echo "Found $(wc -l $TMP_URL_LIST_FILENAME) unique URLs to parse for TikTok user $DUMP_USERNAME"
+    echo "Found $(wc -l "$TMP_URL_LIST_FILENAME") unique URLs to parse for TikTok user $DUMP_USERNAME"
 }
 
 dump_tiktok_user () {

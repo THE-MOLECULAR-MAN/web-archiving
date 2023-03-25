@@ -13,7 +13,8 @@
 # need to modify $PATH variable to look in ~/.local/bin/
 # it already is thanks to my Ansible script
 # force it
-source ~/.bash_profile
+# shellcheck disable=1091
+source "$HOME/.bash_profile"
 
 # another dependency for the Python script
 # must use pip version to get latest of yt-dlp, not Ubuntu's apt - too old
