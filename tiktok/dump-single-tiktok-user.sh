@@ -27,7 +27,7 @@
 set -e
 
 # where to dump the files. It'll create subdirectories automatically
-DESTINATION_DOWNLOAD_PATH_BASE="$HOME/nfs_archive_mirror_downloads/web_archiving/tiktok/"
+DESTINATION_DOWNLOAD_PATH_BASE="$HOME/nfs_archive_mirror_downloads/web_archiving/tiktok"
 
 # single username passed as the only parameter
 DUMP_USERNAME="$1"
@@ -48,9 +48,8 @@ create_list_of_user_video_URLs () {
     # output the full HTML to a local text file.
     # https://stackoverflow.com/questions/22739514/how-to-get-html-with-javascript-rendered-sourcecode-by-using-selenium
     echo "Extracting HTML file via Selenium's Google Chrome for TikTok user $DUMP_USERNAME..."
-    # python3 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" > "$TMP_HTML_DUMP_FILENAME"
-    python3    ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" --html="$TMP_HTML_DUMP_FILENAME" --screenshot="$TMP_SCREENSHOT_FILENAME"
-    python3.10 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" --html="$TMP_HTML_DUMP_FILENAME" --screenshot="$TMP_SCREENSHOT_FILENAME"
+    python3 ./output-page-html-with-js-rendered.py --url="$DUMP_PROFILE_URL" --html="$TMP_HTML_DUMP_FILENAME" --screenshot="$TMP_SCREENSHOT_FILENAME"
+
     echo "Extracting video URLs from HTML file for TikTok user $DUMP_USERNAME..."
     # parse the local HTML file (rendered by Selenium) with Lynx to extract
     # all of the URLs to each video post by a user
@@ -58,7 +57,7 @@ create_list_of_user_video_URLs () {
     lynx -dump -nonumbers -hiddenlinks=listonly "$TMP_HTML_DUMP_FILENAME" | \
         grep "$DUMP_URL_SUBSTRING" | sort --unique --reverse > "$TMP_URL_LIST_FILENAME"
 
-    echo "Found $(wc -l $TMP_URL_LIST_FILENAME) unique URLs to parse for user $DUMP_USERNAME"
+    echo "Found $(wc -l $TMP_URL_LIST_FILENAME) unique URLs to parse for TikTok user $DUMP_USERNAME"
 }
 
 dump_tiktok_user () {
@@ -68,7 +67,7 @@ dump_tiktok_user () {
     # same directory and load configuration from it.
     # any additional configuration here (flags passed here) overwrites the
     # config file.
-    echo "Batch downloading all posts by user $DUMP_USERNAME..."
+    echo "Batch downloading all posts by TikTok user $DUMP_USERNAME..."
     yt-dlp --batch-file "$TMP_URL_LIST_FILENAME" \
         -o "$DESTINATION_DOWNLOAD_PATH_USER/TikTok_%(creator)s_%(upload_date)s_%(id)s.%(ext)s"
     echo "Successfully finished batch downloading all posts by user $DUMP_USERNAME..."
@@ -81,7 +80,7 @@ update_hashsums() {
 
     cd "$DESTINATION_DOWNLOAD_PATH_USER" || exit 1
     touch hashsums.sha256 # create the file in case it doesn't exist
-    echo "Updating hashsums for user $DUMP_USERNAME..."
+    echo "Updating hashsums for TikTok user $DUMP_USERNAME..."
 
     find . -type f ! -name '*.sha256' -print0 |
         while IFS= read -r -d '' ITER_FILE; do
@@ -92,7 +91,7 @@ update_hashsums() {
                 sha256sum "$ITER_FILE" >> hashsums.sha256
             fi
     done
-    echo "Successfully finished updating hashsums for user $DUMP_USERNAME"
+    echo "Successfully finished updating hashsums for TikTok user $DUMP_USERNAME"
 }
 
 # create the download path if it does not exist yet
