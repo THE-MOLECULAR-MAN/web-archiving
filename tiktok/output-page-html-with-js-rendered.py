@@ -56,7 +56,8 @@ def main(argv):
     # driver.maximize_window()
 
     # wait 5 seconds for Chrome to initialize
-    sleep(5)
+    # not sure if this is responsible for limiting # of videos:
+    # sleep(5)
 
     # have the headless Chrome fetch the specific URL
     driver.get(url_to_render)
