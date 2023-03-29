@@ -22,7 +22,7 @@ sudo chmod 744     "$MOUNT_POINT"
 
 # add the NFS mount
 if grep -Fxq "$MOUNT_POINT" /etc/fstab; then
-    echo "adding mount point to /etc/fstab"
+    echo "[install-warc-ubuntu.sh] adding mount point to /etc/fstab"
     echo "10.0.1.35:/volume1/nfs_archive_mirror_downloads		 $MOUNT_POINT  nfs4     auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0" | sudo tee -a /etc/fstab
 else
     echo "mount point already added to /etc/fstab"
@@ -30,11 +30,11 @@ fi
 
 # mount it if not mounted already
 if is_mounted "$MOUNT_POINT"; then
-    echo "$MOUNT_POINT already mounted"
+    echo "[install-warc-ubuntu.sh] $MOUNT_POINT already mounted"
 else
-    echo "$MOUNT_POINT wasn't mounted, mounting now"
+    echo "[install-warc-ubuntu.sh] $MOUNT_POINT wasn't mounted, mounting now"
     sudo mount "$MOUNT_POINT"
-    echo "finished mounting $MOUNT_POINT"
+    echo "[install-warc-ubuntu.sh] finished mounting $MOUNT_POINT"
 fi
 
 # check permissions on directories
@@ -124,7 +124,7 @@ sudo systemctl daemon-reload
 sudo touch "$WARC_SERVICE_LOG_PATH"
 sudo chown "$SERVICE_RUNS_AS_USER" "$WARC_SERVICE_LOG_PATH"
 
-echo "install-warc-ubuntu.sh finished successfully"
+echo "[install-warc-ubuntu.sh] Finished successfully"
 
 #set +e
 # may not be able to call status if it has never run before

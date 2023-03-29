@@ -134,8 +134,8 @@ LOCAL_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | \
 log "Local LAN IP: $LOCAL_IP"
 
 # launch it without using screen since it'll be a service
-log "about to start the proxy process..."
-cd "$WARC_STORAGE_PATH"
+log "Starting the Warc process..."
+cd "$WARC_STORAGE_PATH" || exit 909
 
 # start it and background it
 warcprox --dir ./recordings/ -address "$LOCAL_IP" --port "$WARC_PROXY_PORT" --gzip --rollover-idle-time 86400 --size 250000000 &
@@ -143,10 +143,10 @@ warcprox --dir ./recordings/ -address "$LOCAL_IP" --port "$WARC_PROXY_PORT" --gz
 # had to change this command in Ubuntu
 NEW_PID=$!
 
-log "new pid = $NEW_PID"
+log "New pid = $NEW_PID"
 log $(ps aux | grep warc)
 
-log "sleeping to let it start up..."
+log "Creating PID file ..."
 
 if [ ! -f "$WARC_PID_FILE_PATH" ]; then
   log "Creating new .pid file $WARC_PID_FILE_PATH"
@@ -156,6 +156,9 @@ else
   exit 68
 fi
 
+log "PID file successfully created."
+
+log "sleeping 3 seconds to let it start up..."
 sleep 3
 
 # TODO: add notes to log about screen session and stuff.

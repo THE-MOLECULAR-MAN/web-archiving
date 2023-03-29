@@ -63,4 +63,4 @@ if [[ -f "$HOME/.bashrc" ]]; then
     source "$HOME/.bashrc"
 fi
 
-echo "warc-settings-ubuntu.sh finished successfully"
+echo "[warc-settings-ubuntu.sh] finished successfully"
