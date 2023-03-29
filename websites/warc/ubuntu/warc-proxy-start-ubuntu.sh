@@ -109,11 +109,8 @@ set -e
 
 log "========= STARTING $THIS_SCRIPT_NAME ============="
 
-echo "TRYING TO START SERVICE AS USER $(whoami)"
-
 # debugging stuff, no longer necessary:
 # log "========= What invoked this script: ============="
-# ps -o args="$PPID"
 log "WARC_PROXY_PORT= $WARC_PROXY_PORT"
 log "LOCAL_SUBNET_PREFIX = $LOCAL_SUBNET_PREFIX"
 log "UNDESIRED_PUBLIC_HOSTNAME= $UNDESIRED_PUBLIC_HOSTNAME"
@@ -144,7 +141,7 @@ warcprox --dir ./recordings/ -address "$LOCAL_IP" --port "$WARC_PROXY_PORT" --gz
 NEW_PID=$!
 
 log "New pid = $NEW_PID"
-log $(ps aux | grep warc)
+# log $(ps aux | grep warc)
 
 log "Creating PID file ..."
 

@@ -6,7 +6,7 @@
 
 set -e
 
-echo "test.sh: restarting test."
+echo "[test.sh] Restarting test."
 sudo truncate -s 0 /var/log/warcproxyd.log
 
 sudo systemctl --no-pager stop warcproxyd.service
@@ -18,16 +18,16 @@ git pull
 
 ./install-warc-ubuntu.sh
 
-echo "test.sh: starting the service..."
+echo "[test.sh] Starting the service..."
 sudo systemctl --no-pager start  warcproxyd.service
 
-echo "test.sh: checking the service status..."
+echo "[test.sh] Checking the service status..."
 sudo systemctl --no-pager status warcproxyd.service
 
-echo "test.sh: pgrep of warc related processes:"
+echo "[test.sh] pgrep of warc related processes:"
 pgrep warc
 
-echo "test.sh: enabling the service to autostart on future reboot"
+echo "[test.sh] enabling the service to autostart on future reboot"
 sudo systemctl --no-pager enable warcproxyd.service
 
 echo "-----------------------------------------------------------------------"
@@ -36,4 +36,4 @@ echo "-----------------------------------------------------------------------"
 
 cat /var/log/warcproxyd.log
 
-echo "test.sh finished successfully"
+echo "[test.sh] Finished successfully"
