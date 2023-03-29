@@ -99,7 +99,8 @@ echo "[Unit]
  ExecStart=$LOCAL_REPO_WARC_PATH/warc-proxy-start-ubuntu.sh
  ExecStop=$LOCAL_REPO_WARC_PATH/warc-proxy-stop-ubuntu.sh
  PIDFile=$WARC_PID_FILE_PATH
-
+ User=thrawn
+ 
 [Install]
 WantedBy=multi-user.target
 " | sudo tee "$SERVICE_FILE_PATH"
