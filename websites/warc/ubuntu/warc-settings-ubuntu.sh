@@ -3,6 +3,21 @@
 
 # WARC settings file
 set -e
+
+
+HOME=$(getent passwd $(whoami) | cut -f6 -d:)
+export HOME
+
+
+if [[ -f /etc/profile ]]; then
+    set +e      # this is surprisingly important since the profile often
+    # returns errors
+    # shellcheck disable=1091
+    source /etc/profile
+    set -e
+fi
+
+
 cd || exit 1
 
 CURRENT_USER_HOME=$(pwd)
@@ -31,14 +46,6 @@ export WARC_PID_FILE_PATH="/run/$SERVICE_NAME.pid"
 # pgrep warc
 
 # mkdir /etc/warcproxyd/
-
-if [[ -f /etc/profile ]]; then
-    set +e      # this is surprisingly important since the profile often
-    # returns errors
-    # shellcheck disable=1091
-    source /etc/profile
-    set -e
-fi
 
 # way to source files from user's home directory without
 cd || exit 2 

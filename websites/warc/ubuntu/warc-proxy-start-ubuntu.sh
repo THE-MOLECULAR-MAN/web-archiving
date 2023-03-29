@@ -96,6 +96,8 @@ set -e
 
 log "========= STARTING $THIS_SCRIPT_NAME ============="
 
+echo "TRYING TO START SERVICE AS USER $(whoami)"
+
 # debugging stuff, no longer necessary:
 log "========= What invoked this script: ============="
 ps -o args="$PPID"

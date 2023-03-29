@@ -17,9 +17,16 @@ git pull
 
 ./install-warc-ubuntu.sh
 
+echo "starting the service..."
 sudo systemctl --no-pager start  warcproxyd.service
+
+echo "checking the service status..."
 sudo systemctl --no-pager status warcproxyd.service
+
+echo "looking for running processes"
 pgrep warc
+
+echo "enabling the service to autostart on future reboot"
 sudo systemctl --no-pager enable warcproxyd.service
 
 cat /var/log/warcproxyd.log
