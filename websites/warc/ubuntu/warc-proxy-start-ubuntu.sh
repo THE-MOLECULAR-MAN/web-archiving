@@ -40,12 +40,14 @@ manual_env_load () {
 	set_home_var
 
 	set +e
+	source "/etc/profile" &> /dev/null
 	# shellcheck disable=SC1091
-	source "$HOME/.bashrc"
+	source "$HOME/.bashrc" &> /dev/null
 	# shellcheck disable=SC1091
-	source "$HOME/.bash_profile"
+	source "$HOME/.bash_profile" &> /dev/null
 	# shellcheck disable=SC1091
-	source "$HOME/profile"
+	source "$HOME/.profile" &> /dev/null
+	
 	set -e
 	# echo "Env after:"
 	# env
@@ -110,8 +112,8 @@ log "========= STARTING $THIS_SCRIPT_NAME ============="
 echo "TRYING TO START SERVICE AS USER $(whoami)"
 
 # debugging stuff, no longer necessary:
-log "========= What invoked this script: ============="
-ps -o args="$PPID"
+# log "========= What invoked this script: ============="
+# ps -o args="$PPID"
 log "WARC_PROXY_PORT= $WARC_PROXY_PORT"
 log "LOCAL_SUBNET_PREFIX = $LOCAL_SUBNET_PREFIX"
 log "UNDESIRED_PUBLIC_HOSTNAME= $UNDESIRED_PUBLIC_HOSTNAME"
@@ -154,7 +156,7 @@ sleep 3
 
 # shellcheck disable=SC2009
 log "Processes containing warc:
-$(ps aux | grep warc)"
+$(pgrep warc)"
 
 log "TCP & UDP ports listening:
 $(netstat -tulpn | grep LISTEN)
