@@ -17,6 +17,13 @@ set -e
 ################################################################################
 # Defining variables for your specific environment
 ################################################################################
+set_home_var() {
+    HOME=$(getent passwd $(whoami) | cut -f6 -d:)
+    export HOME
+}
+
+set_home_var
+
 cd "/home/thrawn/source_code/web-archiving/websites/warc/ubuntu" 
 # shellcheck disable=1091
 source ./warc-settings-ubuntu.sh
@@ -30,12 +37,16 @@ manual_env_load () {
 	# Fixes issues with crontab
 	# echo "Env before:"
 	# env
+	set_home_var
+
+	set +e
 	# shellcheck disable=SC1091
-	source "/root/.bashrc"
+	source "$HOME/.bashrc"
 	# shellcheck disable=SC1091
-	source "/root/.bash_profile"
+	source "$HOME/.bash_profile"
 	# shellcheck disable=SC1091
-	source "/etc/profile"
+	source "$HOME/profile"
+	set -e
 	# echo "Env after:"
 	# env
 }

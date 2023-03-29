@@ -3,11 +3,12 @@
 
 # WARC settings file
 set -e
+set_home_var() {
+    HOME=$(getent passwd $(whoami) | cut -f6 -d:)
+    export HOME
+}
 
-
-HOME=$(getent passwd $(whoami) | cut -f6 -d:)
-export HOME
-
+set_home_var
 
 if [[ -f /etc/profile ]]; then
     set +e      # this is surprisingly important since the profile often
@@ -17,10 +18,10 @@ if [[ -f /etc/profile ]]; then
     set -e
 fi
 
+cd "$HOME" || exit 1
 
-cd || exit 1
-
-CURRENT_USER_HOME=$(pwd)
+# workaround
+CURRENT_USER_HOME="$HOME"
 export CURRENT_USER_HOME
 
 export LOCAL_REPO_WARC_PATH="$CURRENT_USER_HOME/source_code/web-archiving/websites/warc/ubuntu"
@@ -48,17 +49,17 @@ export WARC_PID_FILE_PATH="/run/$SERVICE_NAME.pid"
 # mkdir /etc/warcproxyd/
 
 # way to source files from user's home directory without
-cd || exit 2 
+cd "$HOME" || exit 2 
 
 # relying on variables (since the variables may not be defined)
-if [[ -f ./.profile ]]; then
+if [[ -f "$HOME/.profile" ]]; then
     # shellcheck disable=1091
-    source ./.profile
+    source "$HOME/.profile"
 fi
 
-if [[ -f ./.bashrc ]]; then 
+if [[ -f "$HOME/.bashrc" ]]; then 
     # shellcheck disable=1091
-    source ./.bashrc
+    source "$HOME/.bashrc"
 fi
 
 echo "warc-settings-ubuntu.sh finished successfully"
