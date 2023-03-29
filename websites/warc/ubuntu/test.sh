@@ -14,7 +14,9 @@ git pull
 
 ./install-warc-ubuntu.sh
 
-./warc-proxy-start-ubuntu.sh
+sudo systemctl start  warcproxyd.service
+sudo systemctl enable warcproxyd.service
+
 cat /var/log/warcproxyd.log
 
 echo "test.sh finished successfully"

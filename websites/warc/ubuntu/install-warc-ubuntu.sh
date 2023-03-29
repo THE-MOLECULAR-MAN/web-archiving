@@ -126,8 +126,8 @@ sudo systemctl status "$SERVICE_NAME_FULL"
 # exits with error code 3
 set -e
 
-sudo systemctl start "$SERVICE_NAME_FULL"
+#sudo systemctl start "$SERVICE_NAME_FULL"
 
-sudo systemctl enable "$SERVICE_NAME_FULL"
+#sudo systemctl enable "$SERVICE_NAME_FULL"
 
 # tail -f "$WARC_SERVICE_LOG_PATH"
