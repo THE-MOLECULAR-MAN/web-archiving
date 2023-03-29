@@ -11,7 +11,7 @@ is_mounted() {
 
 # This will only install it for the current user
 # shellcheck disable=1091
-# source ./warc-settings-ubuntu.sh
+source ./warc-settings-ubuntu.sh
 
 # set up any NFS mounts here for remote storage of WARC files
 mkdir -p "$MOUNT_POINT"
