@@ -120,11 +120,13 @@ sudo systemctl daemon-reload
 sudo touch "$WARC_SERVICE_LOG_PATH"
 sudo chown root:"$USER" "$WARC_SERVICE_LOG_PATH"
 
+echo "install-warc-ubuntu.sh finished successfully"
 
-set +e
-sudo systemctl status "$SERVICE_NAME_FULL"
+#set +e
+# may not be able to call status if it has never run before
+#sudo systemctl status "$SERVICE_NAME_FULL"
 # exits with error code 3
-set -e
+#set -e
 
 #sudo systemctl start "$SERVICE_NAME_FULL"
 

@@ -5,7 +5,9 @@
 set -e
 cd || exit 1
 
-export CURRENT_USER_HOME=$(pwd)
+CURRENT_USER_HOME=$(pwd)
+export CURRENT_USER_HOME
+
 export LOCAL_REPO_WARC_PATH="$CURRENT_USER_HOME/source_code/web-archiving/websites/warc/ubuntu"
 export MOUNT_POINT="$CURRENT_USER_HOME/nfs_warc"
 export SERVICE_NAME="warcproxyd"

@@ -17,6 +17,7 @@ set -e
 ################################################################################
 # Defining variables for your specific environment
 ################################################################################
+cd "/home/thrawn/source_code/web-archiving/websites/warc/ubuntu" 
 # shellcheck disable=1091
 source ./warc-settings-ubuntu.sh
 # You shouldn't need to modify anything below this line
@@ -101,7 +102,7 @@ ps -o args="$PPID"
 log "WARC_PROXY_PORT= $WARC_PROXY_PORT"
 log "LOCAL_SUBNET_PREFIX = $LOCAL_SUBNET_PREFIX"
 log "UNDESIRED_PUBLIC_HOSTNAME= $UNDESIRED_PUBLIC_HOSTNAME"
-log "CURRENT USER = " $(whoami)
+log "CURRENT USER = $(whoami)"
 
 if [ -f "$WARC_PID_FILE_PATH" ]; then
   log "Service already running. Found .pid file named $WARC_PID_FILE_PATH. Instance of application already exists. Exiting."
