@@ -46,7 +46,7 @@ ls -lah "$MOUNT_POINT"
 
 # install dependences, especially for transcoding video files:
 sudo apt-get update
-sudo apt-get -y install python3-pip
+sudo apt-get -qq -y install python3-pip
 
 # reload the $PATH variable since ~/.profile has an if statement that 
 # will include the relevant directory
@@ -54,18 +54,17 @@ sudo apt-get -y install python3-pip
 source "$HOME/.profile"
 
 # force PIP update, surprisingly neccessary?
-python3 -m pip install -U pip
-sudo python3 -m pip install -U pip
-
+python3 -m pip install --quiet -U pip
+sudo python3 -m pip install --quiet -U pip
 
 # install WARC proxy package from pip
-pip3 install warcprox
+pip3 install --quiet warcprox
 
 # verify installed and path is working
 cd "$WARC_STORAGE_PATH" && warcprox --version
 # test running warcprox
 # need to change directory before running this command
-cd "$WARC_STORAGE_PATH" && warcprox --dir ./recordings/ --address 10.0.1.43 --port 8000 --gzip --rollover-idle-time 86400 --size 250000000 &
+# cd "$WARC_STORAGE_PATH" && warcprox --dir ./recordings/ --address 10.0.1.43 --port 8000 --gzip --rollover-idle-time 86400 --size 250000000 &
 # now press enter to get your prompt back
 # use the "fg" command and then Ctrl+C to kill the warcprox safely
 
@@ -86,7 +85,9 @@ cd "$WARC_STORAGE_PATH" && warcprox --dir ./recordings/ --address 10.0.1.43 --po
 # set up repo
 mkdir -p "$CURRENT_USER_HOME/source_code"
 cd "$CURRENT_USER_HOME/source_code" || exit 99
+set +e
 git clone https://github.com/THE-MOLECULAR-MAN/web-archiving.git
+set -e
 cd "$LOCAL_REPO_WARC_PATH" || exit 25
 
 # create the service definition file
@@ -113,7 +114,7 @@ sudo chmod -R +w "$LOCAL_REPO_WARC_PATH"
 sudo systemctl daemon-reload
 
 # list all services, should include this one:
-sudo systemctl list-units -t service --all
+# sudo systemctl list-units -t service --all
 # no errors from above
 
 set +e
@@ -125,4 +126,4 @@ sudo systemctl start "$SERVICE_NAME_FULL"
 
 sudo systemctl enable "$SERVICE_NAME_FULL"
 
-tail -f "$WARC_SERVICE_LOG_PATH"
+# tail -f "$WARC_SERVICE_LOG_PATH"

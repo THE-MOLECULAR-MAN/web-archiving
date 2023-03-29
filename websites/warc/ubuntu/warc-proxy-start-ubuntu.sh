@@ -22,12 +22,6 @@ source ./warc-settings-ubuntu.sh
 # You shouldn't need to modify anything below this line
 
 ################################################################################
-#		ONE TIME SETUP - Run before the first run.
-################################################################################
-# sudo yum install -y screen    # Install dependencies
-
-
-################################################################################
 #		FUNCTION DEFINITIONS
 ################################################################################
 manual_env_load () {
