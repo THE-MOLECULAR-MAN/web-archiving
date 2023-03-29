@@ -25,7 +25,7 @@ if grep -Fxq "$MOUNT_POINT" /etc/fstab; then
     echo "[install-warc-ubuntu.sh] adding mount point to /etc/fstab"
     echo "10.0.1.35:/volume1/nfs_archive_mirror_downloads		 $MOUNT_POINT  nfs4     auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0" | sudo tee -a /etc/fstab
 else
-    echo "mount point already added to /etc/fstab"
+    echo "[install-warc-ubuntu.sh] mount point already added to /etc/fstab"
 fi
 
 # mount it if not mounted already
@@ -72,6 +72,7 @@ cd "$WARC_STORAGE_PATH" && warcprox --version
 
 # manual test from remote system:
 # curl --proxy "http://10.0.1.43:8000" "http://captive.apple.com"
+# curl --proxy "https://10.0.1.43:8000" "https://www.chase.com"
 
 
 # https://www.shellhacks.com/systemd-service-file-example/
@@ -123,6 +124,9 @@ sudo systemctl daemon-reload
 
 sudo touch "$WARC_SERVICE_LOG_PATH"
 sudo chown "$SERVICE_RUNS_AS_USER" "$WARC_SERVICE_LOG_PATH"
+
+# TODO: needs certificate creation
+
 
 echo "[install-warc-ubuntu.sh] Finished successfully"
 
