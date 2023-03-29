@@ -42,10 +42,10 @@ cd "$MOUNT_POINT"       || exit 3
 cd "$WARC_STORAGE_PATH" || exit 2
 
 # check permissions on remote files
-ls -lah "$MOUNT_POINT"
+# ls -lah "$MOUNT_POINT"
 
 # install dependences, especially for transcoding video files:
-sudo apt-get update
+sudo apt-get -qq update
 sudo apt-get -qq -y install python3-pip
 
 # reload the $PATH variable since ~/.profile has an if statement that 
@@ -116,6 +116,10 @@ sudo systemctl daemon-reload
 # list all services, should include this one:
 # sudo systemctl list-units -t service --all
 # no errors from above
+
+sudo touch "$WARC_SERVICE_LOG_PATH"
+sudo chown root:"$USER" "$WARC_SERVICE_LOG_PATH"
+
 
 set +e
 sudo systemctl status "$SERVICE_NAME_FULL"
