@@ -17,7 +17,7 @@ source ./warc-settings-ubuntu.sh
 mkdir -p "$MOUNT_POINT"
 
 # set permissions
-sudo chown "$USER" "$MOUNT_POINT"
+sudo chown "$SERVICE_RUNS_AS_USER" "$MOUNT_POINT"
 sudo chmod 744     "$MOUNT_POINT"
 
 # add the NFS mount
@@ -99,8 +99,8 @@ echo "[Unit]
  ExecStart=$LOCAL_REPO_WARC_PATH/warc-proxy-start-ubuntu.sh
  ExecStop=$LOCAL_REPO_WARC_PATH/warc-proxy-stop-ubuntu.sh
  PIDFile=$WARC_PID_FILE_PATH
- User=thrawn
- 
+ User=$SERVICE_RUNS_AS_USER
+
 [Install]
 WantedBy=multi-user.target
 " | sudo tee "$SERVICE_FILE_PATH"
@@ -122,7 +122,7 @@ sudo systemctl daemon-reload
 # no errors from above
 
 sudo touch "$WARC_SERVICE_LOG_PATH"
-sudo chown root:"$USER" "$WARC_SERVICE_LOG_PATH"
+sudo chown "$SERVICE_RUNS_AS_USER" "$WARC_SERVICE_LOG_PATH"
 
 echo "install-warc-ubuntu.sh finished successfully"
 

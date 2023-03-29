@@ -28,6 +28,7 @@ export LOCAL_REPO_WARC_PATH="$CURRENT_USER_HOME/source_code/web-archiving/websit
 export MOUNT_POINT="$CURRENT_USER_HOME/nfs_warc"
 export SERVICE_NAME="warcproxyd"
 export SERVICE_NAME_FULL="$SERVICE_NAME.service"
+export SERVICE_RUNS_AS_USER=$(whoami)
 export WARC_STORAGE_PATH="$MOUNT_POINT/web_archiving/websites_via_wayback_warc"
 export SERVICE_FILE_PATH="/etc/systemd/system/$SERVICE_NAME.service"
 export WARC_SERVICE_LOG_PATH="/var/log/$SERVICE_NAME.log"
