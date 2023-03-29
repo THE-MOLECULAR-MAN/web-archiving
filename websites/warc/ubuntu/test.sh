@@ -30,10 +30,9 @@ pgrep warc
 echo "[test.sh] enabling the service to autostart on future reboot"
 sudo systemctl --no-pager enable warcproxyd.service
 
+echo "[test.sh] Finished successfully, tailing log now"
 echo "-----------------------------------------------------------------------"
 echo "-------------------------- LOG FILE CONTENTS START --------------------"
 echo "-----------------------------------------------------------------------"
 
-cat /var/log/warcproxyd.log
-
-echo "[test.sh] Finished successfully"
+tail -f /var/log/warcproxyd.log

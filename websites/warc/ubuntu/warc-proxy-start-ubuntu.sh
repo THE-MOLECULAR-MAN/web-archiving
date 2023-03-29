@@ -135,9 +135,10 @@ log "Starting the Warc process..."
 cd "$WARC_STORAGE_PATH" || exit 909
 
 # start it and background it
-warcprox --dir ./recordings/ -address "$LOCAL_IP" --port "$WARC_PROXY_PORT" --gzip --rollover-idle-time 86400 --size 250000000 &
+warcprox --dir ./recordings/ --address "$LOCAL_IP" --port "$WARC_PROXY_PORT" --gzip --rollover-idle-time 86400 --size 250000000 &
 
-# had to change this command in Ubuntu
+# had to change this command in Ubuntu, do not insert any lines above this and
+# the warcprox start!
 NEW_PID=$!
 
 log "New pid = $NEW_PID"
@@ -161,14 +162,14 @@ sleep 3
 # TODO: add notes to log about screen session and stuff.
 
 # shellcheck disable=SC2009
-log "Processes containing warc:
-$(pgrep warc)"
+# log "Processes containing warc:
+# $(pgrep warc)"
 
-log "TCP & UDP ports listening:
-$(netstat -tulpn | grep LISTEN)
+# log "TCP & UDP ports listening:
+# $(netstat -tulpn | grep LISTEN)
 
-$(ss -tulpn)
+# $(ss -tulpn)
 
-$(lsof -i -P -n | grep LISTEN)"
+# $(lsof -i -P -n | grep LISTEN)"
 
 log "====== FINISHED $THIS_SCRIPT_NAME SUCCESSFULLY ========"
