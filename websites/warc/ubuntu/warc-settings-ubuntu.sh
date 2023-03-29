@@ -2,8 +2,12 @@
 # Tim H 2022
 
 # WARC settings file
+set -e
+cd || exit 1
 
-export MOUNT_POINT="/home/username/nfs_warc"
+export CURRENT_USER_HOME=$(pwd)
+export LOCAL_REPO_WARC_PATH="$CURRENT_USER_HOME/source_code/web-archiving/websites/warc/ubuntu"
+export MOUNT_POINT="$CURRENT_USER_HOME/nfs_warc"
 export SERVICE_NAME="warcproxyd"
 export SERVICE_NAME_FULL="$SERVICE_NAME.service"
 export WARC_STORAGE_PATH="$MOUNT_POINT/web_archiving/websites_via_wayback_warc"
@@ -15,20 +19,37 @@ export LOCAL_SUBNET_PREFIX="10.0.1."                       # prefix to grep for 
 export UNDESIRED_PUBLIC_HOSTNAME="whatever.redacted.me"      # dynamic DNS entry that maps to your home network to make sure you're on a VPN
 export WARC_PID_FILE_PATH="/run/$SERVICE_NAME.pid"
 
-
 # quick retest:
-sudo systemctl stop warcproxyd.service
-sudo truncate -s 0 /var/log/warcproxyd.log
-sudo systemctl start warcproxyd.service 
-sudo systemctl status warcproxyd.service
-cat /var/log/warcproxyd.log
+# sudo systemctl stop warcproxyd.service
+# sudo truncate -s 0 /var/log/warcproxyd.log
+# sudo systemctl start warcproxyd.service 
+# sudo systemctl status warcproxyd.service
+# cat /var/log/warcproxyd.log
 
-pgrep warc
+# pgrep warc
 
-mkdir /etc/warcproxyd/
+# mkdir /etc/warcproxyd/
 
+if [[ -f /etc/profile ]]; then
+    set +e      # this is surprisingly important since the profile often
+    # returns errors
+    # shellcheck disable=1091
+    source /etc/profile
+    set -e
+fi
 
-source /etc/profile
-source /home/username/.profile
-source /home/username/.bashrc
+# way to source files from user's home directory without
+cd || exit 2 
 
+# relying on variables (since the variables may not be defined)
+if [[ -f ./.profile ]]; then
+    # shellcheck disable=1091
+    source ./.profile
+fi
+
+if [[ -f ./.bashrc ]]; then 
+    # shellcheck disable=1091
+    source ./.bashrc
+fi
+
+echo "warc-settings-ubuntu.sh finished successfully"

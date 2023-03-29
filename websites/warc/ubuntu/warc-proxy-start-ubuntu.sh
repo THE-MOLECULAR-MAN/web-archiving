@@ -58,7 +58,7 @@ log () {
 
 # need a "configure-logging" function to call once
 configure_logging () {
-	THIS_SCRIPT_NAME="war-proxy-start-ubuntu.sh"
+	THIS_SCRIPT_NAME="warc-proxy-start-ubuntu.sh"
 	
 	LOGFILE="$WARC_SERVICE_LOG_PATH"                           # filename of file that this script will log to. Keeps history between runs.
 
@@ -82,7 +82,7 @@ check_public_ip () {
 		if [[ "$UNDESIRED_PUBLIC_IP" == "$PUBLIC_IP" ]]
 		then
 			log "ERROR: Get on a VPN before running this script. They're going to track your public IP." 
-			exit 6
+			exit 70
 		else
 			log "Public IP is fine, proceeding."
 		fi
@@ -107,11 +107,11 @@ ps -o args="$PPID"
 log "WARC_PROXY_PORT= $WARC_PROXY_PORT"
 log "LOCAL_SUBNET_PREFIX = $LOCAL_SUBNET_PREFIX"
 log "UNDESIRED_PUBLIC_HOSTNAME= $UNDESIRED_PUBLIC_HOSTNAME"
-
+log "CURRENT USER = " $(whoami)
 
 if [ -f "$WARC_PID_FILE_PATH" ]; then
   log "Service already running. Found .pid file named $WARC_PID_FILE_PATH. Instance of application already exists. Exiting."
-  exit 3
+  exit 69
 fi
 
 check_public_ip
@@ -119,12 +119,16 @@ check_public_ip
 set -e
 
 # grabs the internal LAN IP to avoid listening on VPN IP(s)
-LOCAL_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep  "$LOCAL_SUBNET_PREFIX")
+LOCAL_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | \
+	grep -Eo '([0-9]*\.){3}[0-9]*' | grep  "$LOCAL_SUBNET_PREFIX")
 log "Local LAN IP: $LOCAL_IP"
 
 # launch it without using screen since it'll be a service
 log "about to start the proxy process..."
-cd "$WARC_STORAGE_PATH" && warcprox --dir ./recordings/ -address "$LOCAL_IP" --port "$WARC_PROXY_PORT" --gzip --rollover-idle-time 86400 --size 250000000 &
+cd "$WARC_STORAGE_PATH" && \
+	warcprox --dir ./recordings/ -address "$LOCAL_IP" \
+		--port "$WARC_PROXY_PORT" --gzip \
+		--rollover-idle-time 86400 --size 250000000 &
 NEW_PID=$($!)
 log "sleeping to let it start up..."
 
@@ -133,7 +137,7 @@ if [ ! -f "$WARC_PID_FILE_PATH" ]; then
   echo "$NEW_PID" > "$WARC_PID_FILE_PATH"
 else
   log "After service start, found existing .pid file named $WARC_PID_FILE_PATH. Instance of application already exists. Exiting."
-  exit 4
+  exit 68
 fi
 
 sleep 3

@@ -50,8 +50,6 @@ else
   exit 4
 fi
 
-
-
 #pkill -f warcprox
 
 log "====== FINISHED WARC-PROXY-STOP SUCCESSFULLY ========"
