@@ -139,7 +139,10 @@ cd "$WARC_STORAGE_PATH" && \
 	warcprox --dir ./recordings/ -address "$LOCAL_IP" \
 		--port "$WARC_PROXY_PORT" --gzip \
 		--rollover-idle-time 86400 --size 250000000 &
-NEW_PID=$($!)
+
+# had to change this command in Ubuntu
+NEW_PID=$!
+
 log "sleeping to let it start up..."
 
 if [ ! -f "$WARC_PID_FILE_PATH" ]; then
