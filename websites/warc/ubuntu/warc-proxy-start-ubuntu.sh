@@ -135,13 +135,16 @@ log "Local LAN IP: $LOCAL_IP"
 
 # launch it without using screen since it'll be a service
 log "about to start the proxy process..."
-cd "$WARC_STORAGE_PATH" && \
-	warcprox --dir ./recordings/ -address "$LOCAL_IP" \
-		--port "$WARC_PROXY_PORT" --gzip \
-		--rollover-idle-time 86400 --size 250000000 &
+cd "$WARC_STORAGE_PATH"
+
+# start it and background it
+warcprox --dir ./recordings/ -address "$LOCAL_IP" --port "$WARC_PROXY_PORT" --gzip --rollover-idle-time 86400 --size 250000000 &
 
 # had to change this command in Ubuntu
 NEW_PID=$!
+
+log "new pid = $NEW_PID"
+log $(ps aux | grep warc)
 
 log "sleeping to let it start up..."
 
