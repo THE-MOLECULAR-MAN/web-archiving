@@ -2,14 +2,10 @@
 # Tim H 2021
 #   Service start for WARC proxy. Default setup:
 #       Listens on TCP 8000
-#       rotates the WARC file once per day
+#       rotates the WARC file every 2 hours
 #       limits the WARC file to 250 MB before rotating
 #   This should be installed to autostart on boot.
-#   Checks to make sure it is only listening on the LAN IP (not the VPN one) and 
-#       
-#
-#   References:
-#       https://www.thegeekdiary.com/centos-rhel-7-how-to-make-custom-script-to-run-automatically-during-boot/
+#   Checks to make sure it is only listening on the LAN IP (not the VPN one)
 
 # bomb out in case of errors
 set -e
@@ -18,7 +14,7 @@ set -e
 # Defining variables for your specific environment
 ################################################################################
 set_home_var() {
-    HOME=$(getent passwd $(whoami) | cut -f6 -d:)
+    HOME=$(getent passwd "$(whoami)" | cut -f6 -d:)
     export HOME
 }
 
@@ -40,6 +36,7 @@ manual_env_load () {
 	set_home_var
 
 	set +e
+	# shellcheck disable=SC1091
 	source "/etc/profile" &> /dev/null
 	# shellcheck disable=SC1091
 	source "$HOME/.bashrc" &> /dev/null
@@ -132,10 +129,19 @@ log "Local LAN IP: $LOCAL_IP"
 
 # launch it without using screen since it'll be a service
 log "Starting the Warc process..."
-cd "$WARC_STORAGE_PATH" || exit 909
+cd "$WARC_STORAGE_PATH" || exit 254
 
 # start it and background it
-warcprox --dir ./recordings/ --address "$LOCAL_IP" --port "$WARC_PROXY_PORT" --gzip --rollover-idle-time 86400 --size 250000000 &
+warcprox \
+	--dir ./recordings/ \
+	--address "$LOCAL_IP" \
+	--port "$WARC_PROXY_PORT" \
+	--gzip \
+	--rollover-idle-time 7200 \
+	--crawl-log-dir ./crawl_logs/ \
+	--method-filter GET \
+	--digest-algorithm sha256 \
+	--size 250000000 &
 
 # had to change this command in Ubuntu, do not insert any lines above this and
 # the warcprox start!
