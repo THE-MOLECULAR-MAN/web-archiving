@@ -29,7 +29,7 @@ pgrep warc
 
 # configuring certs
 sudo apt-get install -y ca-certificates
-cd /home/thrawn/nfs_warc/web_archiving/websites_via_wayback_warc || exit 2347
+cd /home/thrawn/nfs_warc/web_archiving/websites_via_wayback_warc || exit 233
 
 # service must have been started at least once for this to work
 # CA needs to exist:
